@@ -9,7 +9,6 @@ $title = $_POST['title'];
 $file_name = $_POST['name'];
 $count = count_db();
 $count = intval($count['img_num']) + 1;
-//$count = 1;
 $publish = $_POST['publish'];
 //一時ファイルができているか（アップロードされているか）チェック
 if(is_uploaded_file($_FILES['file']['tmp_name'])){
