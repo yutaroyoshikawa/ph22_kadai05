@@ -5,7 +5,7 @@ require_once('../model/sign_up_check_db.php');
 
 function check_info() {
     $id = $_POST['id'];
-    $passwd = password_hash($_POST['passwd'], PASSWORD_BCRYPT);
+    $passwd = $_POST['passwd'];
     $name = $_POST['name'];
 
     if(!(mb_strlen($id) >= 3 && mb_strlen($id) <= 10)){
@@ -20,6 +20,7 @@ function check_info() {
         return "名前を確認してください。";
     }
 
+    $passwd = password_hash($_POST['passwd'], PASSWORD_BCRYPT);
     $pdo = connect_db();
     $user = exists_check($id, $pdo);
 
