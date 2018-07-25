@@ -3,20 +3,33 @@
 require_once('../model/db_controll.php');
 require_once('../model/sign_up_check_db.php');
 
-$id = $_POST['id'];
-$passwd = password_hash($_POST['passwd'], PASSWORD_BCRYPT);
-// $passwd = 'hoge';
-$name = $_POST['name'];
+function check_info() {
+    $id = $_POST['id'];
+    $passwd = password_hash($_POST['passwd'], PASSWORD_BCRYPT);
+    $name = $_POST['name'];
 
-$pdo = connect_db();
+    if(!(mb_strlen($id) >= 3 && mb_strlen($id) <= 10)){
+        return "IDを確認してください。";
+    }
 
-$user = exists_check($id, $pdo);
-print_r($user);
+    if(!(mb_strlen($passwd) >= 3 && mb_strlen($passwd) <= 10)){
+        return "パスワードを確認してください。";
+    }
 
-// ユーザがいる
-if(!empty($user)){
-    header('Location: ../view/sign_up_error.php', true, 301);
-}else{
-	subscribe($id, $passwd, $name, $pdo);
-	header('Location: ../view/login.php', true, 301);
+    if(!(mb_strlen($name) >= 1 && mb_strlen($name) <= 20)){
+        return "名前を確認してください。";
+    }
+
+    $pdo = connect_db();
+    $user = exists_check($id, $pdo);
+
+    // ユーザがいる
+    if(!empty($user)){
+        return "既に使用されているIDです。";
+    }else{
+        subscribe($id, $passwd, $name, $pdo);
+        header('Location: ../view/login.php', true, 301);
+    }
 }
+
+
