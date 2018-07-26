@@ -17,11 +17,22 @@ function subscribe_info($account_id, $title, $name, $publish){
     $stmt->execute();
     $id = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    $stmt = $pdo->prepare('INSERT INTO image_file(account_id, title, filename, publish) VALUES (:account_id, :title, :filename, :publish)');
+    $stmt = $pdo->prepare('INSERT INTO image_file(account_id, title, filename, publish) VALUES (:account_id, :title, :filename, :publish);');
     $stmt->bindParam(':account_id', $id['id']);
     $stmt->bindParam(':title', $title);
     $stmt->bindParam(':filename', $name);
     $stmt->bindParam(':publish', $publish);
     $stmt->execute();
     $pdo = null;
+};
+
+function check_autoinc($table_name){
+    $pdo = connect_db();
+    $stmt = $pdo->prepare('SELECT auto_increment FROM information_schema.tables WHERE table_name = :table_name;');
+    $stmt->bindParam(':table_name', $table_name);
+    $stmt->execute();
+    $id = $stmt->fetch(PDO::FETCH_ASSOC);
+    $pdo = null;
+
+    return $id;
 };
