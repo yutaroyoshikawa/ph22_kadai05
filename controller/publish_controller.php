@@ -1,7 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Yutaro
- * Date: 2018/07/26
- * Time: 11:42
- */
+require_once('../model/publish_model.php');
+
+publish_db($_POST['id'], $_POST['publish']);
+
+header('Location: ../view/list.php', true, 301);
